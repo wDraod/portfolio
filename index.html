@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>张奥 Olive | AI 产品经理</title>
+    
+    <meta name="description" content="张奥 Olive 的个人品牌门户。AI 产品经理，致力于将前沿技术转化为解决实际痛点的产品。">
+    <meta name="keywords" content="张奥, Olive, AI产品经理, Agent, RAG, 独立开发者">
+    <meta property="og:title" content="张奥 Olive | Architect-Minded AI PM">
+    <meta property="og:description" content="用建筑的严谨逻辑重构智能交互，以工程的硬核底座驱动产品落地。">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -71,7 +78,7 @@
 </head>
 <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-50 selection:bg-gray-900 selection:text-white dark:selection:bg-white dark:selection:text-gray-900">
 
-    <header class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50 border-b border-gray-100 dark:border-gray-800 transition-colors">
+    <header class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-40 border-b border-gray-100 dark:border-gray-800 transition-colors">
         <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="#" class="text-lg font-semibold tracking-tight hover:opacity-70 transition-opacity">张奥 Olive</a>
             <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -256,8 +263,12 @@
                 </button>
             </div>
 
-            <p class="text-sm text-gray-400 dark:text-gray-500">
-                &copy; <script>document.write(new Date().getFullYear())</script> 张奥 Olive. All rights reserved.
+            <p class="text-sm text-gray-400 dark:text-gray-500 flex flex-col items-center gap-2">
+                <span>&copy; <script>document.write(new Date().getFullYear())</script> 张奥 Olive. All rights reserved.</span>
+                <span class="flex items-center gap-1 text-xs opacity-70">
+                    <i data-lucide="sparkles" class="w-3 h-3"></i> 
+                    Designed & Vibe Coded with AI Assistant
+                </span>
             </p>
         </div>
     </footer>
@@ -265,27 +276,56 @@
     <script>
         lucide.createIcons();
 
-        // 复制微信并弹窗
+        // ==========================================
+        // UI 优化：创建全局 Toast 提示系统 
+        // 替代原生的 window.alert()，提供无缝、丝滑的沉浸式体验
+        // ==========================================
+        function showToast(message) {
+            // 移除已有的 toast 避免堆叠
+            const existingToast = document.getElementById('custom-toast');
+            if (existingToast) existingToast.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'custom-toast';
+            // Tailwind 样式：居中浮动，主题自适应，丝滑进入/退出动画
+            toast.className = 'fixed top-10 left-1/2 -translate-x-1/2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-full shadow-lg text-sm font-medium z-50 transition-all duration-500 opacity-0 translate-y-[-20px] flex items-center gap-2';
+            toast.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4"></i> <span>${message}</span>`;
+            
+            document.body.appendChild(toast);
+            lucide.createIcons(); // 渲染 toast 内的图标
+
+            // 触发进入动画
+            requestAnimationFrame(() => {
+                toast.classList.remove('opacity-0', 'translate-y-[-20px]');
+                toast.classList.add('opacity-100', 'translate-y-0');
+            });
+
+            // 2.5秒后自动触发退出动画并销毁节点
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-[-20px]');
+                setTimeout(() => toast.remove(), 500); // 确保等待动画结束再移除 DOM
+            }, 2500);
+        }
+
+        // 复制微信
         function copyWeChat() {
             const wechatId = "Zap70319612";
-            // 将微信号写入剪贴板
             navigator.clipboard.writeText(wechatId).then(() => {
-                alert("您已成功粘贴我的微信，很荣幸与您相遇！");
-            }).catch(err => {
-                // 如果浏览器拦截了剪贴板权限，退级使用基础弹窗
-                alert("您已成功粘贴我的微信，很荣幸与您相遇！\n（微信号：Zap70319612）");
+                showToast("微信号已复制，期待交流！");
+            }).catch(() => {
+                // 异常降级处理：防止用户浏览器禁用剪贴板权限
+                showToast("微信号：Zap70319612 (请手动记录)");
             });
         }
 
-        // 复制电话并弹窗
+        // 复制电话
         function copyPhone() {
             const phoneNum = "18990326448";
-            // 将电话写入剪贴板
             navigator.clipboard.writeText(phoneNum).then(() => {
-                alert("期待与您的进一步交流！");
-            }).catch(err => {
-                // 退级处理
-                alert("期待与您的进一步交流！\n（联系电话：18990326448）");
+                showToast("手机号已复制，期待您的来电！");
+            }).catch(() => {
+                showToast("联系电话：18990326448 (请手动记录)");
             });
         }
     </script>
